@@ -1,40 +1,25 @@
-"use strict"
+"use strict";
 
-// 文件系统
-const fs = require('fs')
-// express插件
-const express = require('express')
-const compression = require('compression')
-// 路径系统
-const path = require('path')
-// 静态文件资源器
-const favicon = require('serve-favicon')
+const fs = require('fs');
+const express = require('express');
+const compression = require('compression');
+const path = require('path');
+const favicon = require('serve-favicon');
+const morgan = require('morgan');
+const FileStreamRotator = require('file-stream-rotator');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const CONFIG = require('./config');
+const routes = require('./routes/index');
 
-//日志系统
-const morgan = require('morgan')
-
-// 文件系统流
-const FileStreamRotator = require('file-stream-rotator')
-
-// 处理http请求头以及参数转换
-const cookieParser = require('cookie-parser')
-const bodyParser = require('body-parser')
-
-// 配置文件
-const CONFIG = require('./config')
-
-// 路由配置文件
-const routes = require('./routes/index')
-
-// express框架
-const app = express()
+const app = express();
 
 // webpack
 if (process.argv[2] == '-fe') {
-  var webpackConfig = require('./build/webpack.dev.conf')
-  var webpack = require('webpack')
-  var webpackDevMiddleware = require('webpack-dev-middleware')
-  var compiler = webpack(webpackConfig)
+  var webpackConfig = require('./build/webpack.dev.conf');
+  var webpack = require('webpack');
+  var webpackDevMiddleware = require('webpack-dev-middleware');
+  var compiler = webpack(webpackConfig);
   var devMiddleware = webpackDevMiddleware(compiler, {
     publicPath: webpackConfig.output.publicPath,
     stats: {
@@ -42,21 +27,34 @@ if (process.argv[2] == '-fe') {
       chunks: true,
       progress: true
     }
-  })
-  var hotMiddleware = require('webpack-hot-middleware')(compiler)
-  app.use(devMiddleware)
-  app.use(hotMiddleware)
+  });
+  var hotMiddleware = require('webpack-hot-middleware')(compiler);
+  app.use(devMiddleware);
+  app.use(hotMiddleware);
 }
 
 // 爬虫任务
-const Job = require('./spider/util/task')
-const SpiderMan = require('./spider/spider')
+const Job = require('./spider/util/task');
+const SpiderMan = require('./spider/spider');
 
-// views engine setup
-app.set('views', path.join(__dirname, 'views'))
+if (CONFIG.spider.fire) {
+  SpiderMan.fire(CONFIG.spider.start, CONFIG.spider.end);
+}
+if (CONFIG.spider.openTask) {
+  SpiderMan.latest();
+  // Job.fire();
+}
+
+// 生成统计数据
+// const statistic = require('./statistic')
+// 参数为需要统计的月份数组
+// statistic.start(['201609', '201608'])
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(favicon(__dirname + '/public/favicon.ico'))
 
+app.use(favicon(__dirname + '/public/favicon.ico'));
 
 app.use(compression());
 app.use(bodyParser.json());
@@ -67,7 +65,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 
 /// catch 404 and forwarding to error handler
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   // next(err);
@@ -80,7 +78,7 @@ app.use(function (req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function (err, req, res, next) {
+  app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
       message: err.message,
@@ -91,7 +89,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
-app.use(function (err, req, res, next) {
+app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,

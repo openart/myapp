@@ -4,7 +4,7 @@ const Promise = require('es6-promise').Promise
 
 const CONFIG = require('../config')
 
-const articleDAO = require('../database/models/article')
+const ArticleDAO = require('../database/models/article')
 const LatestDAO = require('../database/models/latest')
 
 
@@ -13,6 +13,7 @@ const zhAPI = require('./api/index-promise')
 const DateCalc = require('./util/date')
 const dateCalculator = new DateCalc()
 
+const articleDAO = new ArticleDAO();
 const latestDAO = new LatestDAO()
 
 

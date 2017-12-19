@@ -4,9 +4,9 @@ module.exports = {
         name: 'zhihu',
         host: '39.108.85.243',
         port: 27017,
-        username: 'zhihu',
-        password: 'zhihu',
-        url: function () {
+        username: 'username',
+        password: 'password',
+        url: function() {
             return ['mongodb://',
                 this.username, ':',
                 this.password, '@',
@@ -35,7 +35,7 @@ module.exports = {
     },
     spider: {
         fire: false,
-        openTask: false,
+        openTask: true,
         start: '20151231',
         end: '20151001',
         interval: 10

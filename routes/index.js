@@ -1,11 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
-var home = require('./../controller/home')
+var home = require('./../controller/home');
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+router.get('/', home.index);
+
+// 每日的latest数据
+router.get('/latest', home.getLatest);
+
+// 按日期查询
+// router.get('/day/:day', home.searchDate);
 
 module.exports = router;

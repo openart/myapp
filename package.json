@@ -1,9 +1,19 @@
 {
-  "name": "myapp",
-  "version": "0.0.0",
-  "private": true,
+  "name": "zhihu-spider-daily",
+  "version": "3.0.1",
+  "author": "cc <ccking@foxmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ccforward/zhihu.git"
+  },
+  "homepage": "https://github.com/ccforward/zhihu#readme",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/zh.js",
+    "dev": "supervisor ./bin/zh.js",
+    "dev:fe": "node ./bin/zh.js -fe",
+    "build": "node ./build/build.js",
+    "build-statis": "node ./build/build.js statis"
   },
   "dependencies": {
     "axios": "^0.15.3",

@@ -1,0 +1,8 @@
+[2017-12-20 00:53:50.555] [ERROR] cheese - get lastest data error:  TypeError: Spider.acticle is not a function
+    at /Users/apple/web/zhihu/spider/spider.js:77:28
+    at tryCatch (/Users/apple/web/zhihu/node_modules/_es6-promise@4.1.1@es6-promise/dist/es6-promise.js:416:12)
+    at invokeCallback (/Users/apple/web/zhihu/node_modules/_es6-promise@4.1.1@es6-promise/dist/es6-promise.js:431:13)
+    at publish (/Users/apple/web/zhihu/node_modules/_es6-promise@4.1.1@es6-promise/dist/es6-promise.js:399:7)
+    at flush (/Users/apple/web/zhihu/node_modules/_es6-promise@4.1.1@es6-promise/dist/es6-promise.js:126:5)
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)
